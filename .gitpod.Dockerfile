@@ -1,5 +1,6 @@
 FROM gitpod/workspace-c:latest
 
+USER root
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && apt-get -q update && \
     apt-get -q install -y \
     libcurl4 \
@@ -12,7 +13,7 @@ RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && ap
 #       Key fingerprint = A62A E125 BBBF BB96 A6E0  42EC 925C C1CC ED3D 1561
 # uid                  Swift 5.x Release Signing Key <swift-infrastructure@swift.org
 ARG SWIFT_SIGNING_KEY=A62AE125BBBFBB96A6E042EC925CC1CCED3D1561
-ARG SWIFT_PLATFORM=ubuntu22.04
+ARG SWIFT_PLATFORM=ubuntu20.04
 ARG SWIFT_BRANCH=swift-5.7.2-release
 ARG SWIFT_VERSION=swift-5.7.2-RELEASE
 ARG SWIFT_WEBROOT=https://download.swift.org
@@ -50,3 +51,5 @@ RUN set -e; \
     && tar -xzf swift.tar.gz --directory / --strip-components=1 $SWIFT_VERSION-$SWIFT_PLATFORM$OS_ARCH_SUFFIX/usr/lib/swift/linux \
     && chmod -R o+r /usr/lib/swift \
     && rm -rf "$GNUPGHOME" swift.tar.gz.sig swift.tar.gz
+
+USER gitpod:gitpod
